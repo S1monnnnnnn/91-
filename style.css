@@ -116,6 +116,7 @@ body {
   padding: 20px;
 }
 .card-front {
+  background-color: #1e1b4b;
   background: #1e1b4b var(--champ-img) center/cover no-repeat;
   border: 2px solid #e0e7ff;
   border-top: 4px solid var(--champ-c1, #667eea);
@@ -131,6 +132,7 @@ body {
 .card-back {
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
+  background-color: #0f0d2e;
   background: #0f0d2e var(--champ-img) center/cover no-repeat;
   border: 2px solid #f3e8ff;
   border-top: 4px solid var(--champ-c2, #a78bfa);
@@ -364,9 +366,8 @@ body {
     width: 100%;
     max-width: 360px;
     height: 320px;
-  }
-  .card-inner, #review-card .card-inner {
-    width: 100%; height: 100%;
+    perspective: none !important;
+    -webkit-perspective: none !important;
   }
   .card-top-bar, .review-card-top { max-width: 360px; }
   .card-word { font-size: 28px; }
@@ -398,6 +399,8 @@ body {
   .flashcard, #review-card {
     max-width: 100%;
     height: 270px;
+    perspective: none !important;
+    -webkit-perspective: none !important;
   }
   .card-top-bar, .review-card-top { max-width: 100%; }
   .card-word { font-size: 24px; letter-spacing: 1px; }
