@@ -367,6 +367,29 @@ body {
     max-width: 360px;
     height: 320px;
   }
+  .flashcard.flipped .card-inner, #review-card.flipped .card-inner {
+    transform: none;
+    -webkit-transform: none;
+  }
+  .card-front, .card-back {
+    transition: opacity 0.3s ease;
+  }
+  .card-front { opacity: 1; z-index: 2; }
+  .card-back {
+    transform: none;
+    -webkit-transform: none;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .flashcard.flipped .card-front, #review-card.flipped .card-front {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .flashcard.flipped .card-back, #review-card.flipped .card-back {
+    opacity: 1;
+    pointer-events: auto;
+  }
   .card-top-bar, .review-card-top { max-width: 360px; }
   .card-word { font-size: 28px; }
   .card-meaning { font-size: 17px; }
@@ -409,6 +432,29 @@ body {
   .flashcard, #review-card {
     max-width: 100%;
     height: 270px;
+  }
+  .flashcard.flipped .card-inner, #review-card.flipped .card-inner {
+    transform: none;
+    -webkit-transform: none;
+  }
+  .card-front, .card-back {
+    transition: opacity 0.3s ease;
+  }
+  .card-front { opacity: 1; z-index: 2; }
+  .card-back {
+    transform: none;
+    -webkit-transform: none;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .flashcard.flipped .card-front, #review-card.flipped .card-front {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .flashcard.flipped .card-back, #review-card.flipped .card-back {
+    opacity: 1;
+    pointer-events: auto;
   }
   .card-top-bar, .review-card-top { max-width: 100%; }
   .card-word { font-size: 24px; letter-spacing: 1px; }
