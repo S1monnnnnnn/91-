@@ -344,17 +344,69 @@ body {
   .header { flex-direction: column; text-align: center; }
   .nav { width: 100%; justify-content: center; flex-wrap: wrap; }
   .nav-btn { padding: 8px 12px; font-size: 13px; }
-  .flashcard { width: 100%; max-width: 340px; height: 340px; }
-  #review-card { width: 100%; max-width: 340px; height: 340px; }
-  .card-word { font-size: 30px; }
-  .card-top-bar, .review-card-top { max-width: 340px; }
-  .card-controls { flex-wrap: wrap; justify-content: center; }
-  .ctrl-btn { padding: 10px 20px; font-size: 14px; }
-  .review-controls { flex-wrap: wrap; }
-  .review-btn { padding: 8px 14px; font-size: 13px; }
+
+  .flashcard, #review-card {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    min-height: 300px;
+    aspect-ratio: 11 / 10;
+  }
+  .card-top-bar, .review-card-top { max-width: 360px; }
+  .card-word { font-size: 28px; }
+  .card-meaning { font-size: 17px; }
+  .card-extra { font-size: 13px; }
+  .card-phonetic { font-size: 13px; }
+  .card-phrase-item { font-size: 12px; padding: 6px 10px; }
+  .card-champion-name { font-size: 10px; padding: 3px 10px; margin-bottom: 8px; }
+  .card-phrases-label { font-size: 10px; margin-top: 10px; margin-bottom: 5px; }
+  .card-front { padding: 14px; }
+  .card-back { padding: 14px; padding-top: 18px; }
+
+  .card-controls { flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .ctrl-btn { padding: 10px 20px; font-size: 14px; flex: 1; min-width: 80px; }
+  .review-controls { flex-wrap: wrap; gap: 6px; }
+  .review-btn { padding: 8px 12px; font-size: 12px; flex: 1 1 42%; max-width: 48%; }
   .review-stats-bar { gap: 24px; }
   .review-stat-num { font-size: 22px; }
   .quiz-options { grid-template-columns: 1fr; }
   .quiz-question { font-size: 28px; }
   .wordlist-table-wrap { overflow-x: scroll; }
+}
+
+@media (max-width: 380px) {
+  .header { padding: 12px 14px; }
+  .logo-text { font-size: 18px; }
+  .nav-btn { padding: 6px 9px; font-size: 12px; }
+
+  .flashcard, #review-card {
+    max-width: 100%;
+    min-height: 270px;
+  }
+  .card-top-bar, .review-card-top { max-width: 100%; }
+  .card-word { font-size: 24px; letter-spacing: 1px; }
+  .card-meaning { font-size: 15px; }
+  .card-extra { font-size: 12px; }
+  .card-phonetic { font-size: 12px; }
+  .card-hint { font-size: 11px; }
+  .card-champion-name { font-size: 9px; padding: 2px 8px; margin-bottom: 6px; }
+  .card-phrases-label { font-size: 9px; margin-top: 8px; margin-bottom: 4px; }
+  .card-phrase-item { font-size: 11px; padding: 5px 8px; gap: 4px; }
+  .card-front { padding: 10px; }
+  .card-back { padding: 10px; padding-top: 14px; }
+
+  .ctrl-btn { padding: 8px 14px; font-size: 13px; min-width: 70px; }
+  .review-btn { padding: 6px 10px; font-size: 11px; flex: 1 1 44%; max-width: 49%; }
+  .review-btn small { font-size: 9px; }
+  .review-stat-num { font-size: 20px; }
+  .review-stats-bar { gap: 18px; }
+  .review-interval { font-size: 11px; }
+  .card-index { font-size: 11px; }
+  .btn-random, .btn-order { padding: 5px 10px; font-size: 11px; }
+  .review-container { padding: 16px; }
+  .quiz-container { padding: 16px; }
+  .quiz-question { font-size: 24px; }
+  .option-btn { padding: 12px 14px; font-size: 14px; }
+  .flashcard-container { padding: 16px 14px 20px; }
+  .wordlist-container { padding: 14px; }
 }
