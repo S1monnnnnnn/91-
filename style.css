@@ -381,19 +381,15 @@ body {
   .card-back { padding-top: 18px; }
   .card-front {
     overflow: visible !important;
-    background-color: #1e1b4b !important;
-    background-image: none !important;
+    background: #ff4444 !important;
+    outline: 3px solid yellow;
   }
   .card-back {
     overflow: visible !important;
-    background-color: #0f0d2e !important;
-    background-image: none !important;
+    background: #4444ff !important;
   }
-  .card-front::after {
-    background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.35) 100%);
-  }
-  .card-back::after {
-    background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.35) 100%);
+  .card-front::after, .card-back::after {
+    display: none !important;
   }
 
   .card-controls { flex-wrap: wrap; justify-content: center; gap: 8px; }
@@ -431,20 +427,15 @@ body {
   .card-back { padding-top: 14px; }
   .card-front {
     overflow: visible !important;
-    background-color: #1e1b4b !important;
-    background-image: none !important;
-    outline: 3px solid red;
+    background: #ff4444 !important;
+    outline: 3px solid yellow;
   }
   .card-back {
     overflow: visible !important;
-    background-color: #0f0d2e !important;
-    background-image: none !important;
+    background: #4444ff !important;
   }
-  .card-front::after {
-    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.28) 100%);
-  }
-  .card-back::after {
-    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 100%);
+  .card-front::after, .card-back::after {
+    display: none !important;
   }
 
   .ctrl-btn { padding: 8px 14px; font-size: 13px; min-width: 70px; }
