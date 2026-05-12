@@ -319,7 +319,6 @@ function loadCurrentState() {
 }
 
 document.getElementById('flashcard').addEventListener('click', flipCard);
-document.getElementById('flashcard').addEventListener('touchstart', flipCard, { passive: true });
 document.getElementById('btn-forgot').addEventListener('click', () => markWord('unknown'));
 document.getElementById('btn-vague').addEventListener('click', () => markWord('familiar'));
 document.getElementById('btn-know').addEventListener('click', () => markWord('mastered'));
@@ -628,7 +627,6 @@ function updateReviewBadge() {
 
 // Review event bindings
 document.getElementById('review-card').addEventListener('click', flipReviewCard);
-document.getElementById('review-card').addEventListener('touchstart', flipReviewCard, { passive: true });
 document.getElementById('review-forgot').addEventListener('click', () => answerReview(0));
 document.getElementById('review-hard').addEventListener('click', () => answerReview(1));
 document.getElementById('review-good').addEventListener('click', () => answerReview(2));

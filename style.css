@@ -366,6 +366,7 @@ body {
     width: 100%;
     max-width: 360px;
     height: 320px;
+    touch-action: manipulation;
   }
   .flashcard.flipped .card-inner, #review-card.flipped .card-inner {
     transform: none;
@@ -432,6 +433,7 @@ body {
   .flashcard, #review-card {
     max-width: 100%;
     height: 270px;
+    touch-action: manipulation;
   }
   .flashcard.flipped .card-inner, #review-card.flipped .card-inner {
     transform: none;
