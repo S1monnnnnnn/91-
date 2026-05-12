@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>91背单词 - 四六级 / 考研词汇</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">91</span>
+        <span class="logo-text">背单词</span>
+      </div>
+      <div class="header-controls">
+        <select id="header-level" class="level-select">
+          <option value="all">全部词库</option>
+          <option value="cet4">四级词汇</option>
+          <option value="kaoyan">考研词汇</option>
+        </select>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-tab="flashcard">闪卡模式</button>
+        <button class="nav-btn" data-tab="quiz">测验模式</button>
+        <button class="nav-btn" data-tab="review">智能复习<span class="review-badge" id="review-badge">0</span></button>
+        <button class="nav-btn" data-tab="wordlist">单词列表</button>
+      </nav>
+      <div class="stats">
+        <span class="stat-item">
+          <span class="stat-label">已学</span>
+          <span class="stat-value" id="learned-count">0</span>
+        </span>
+        <span class="stat-item">
+          <span class="stat-label">进度</span>
+          <span class="stat-value" id="progress-percent">0%</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- 闪卡模式 -->
+      <section class="tab-content active" id="flashcard-tab">
+        <div class="flashcard-container">
+          <div class="card-top-bar">
+            <span class="level-tag" id="card-level-tag">CET-4</span>
+            <span class="card-index" id="card-index-text">1 / 500</span>
+          </div>
+          <div class="card-stack">
+            <div class="flashcard" id="flashcard">
+              <div class="card-inner">
+                <div class="card-front">
+                  <div class="card-champion-name" id="card-champ-name"></div>
+                  <div class="card-phonetic" id="card-phonetic"></div>
+                  <div class="card-word" id="card-word"></div>
+                  <div class="card-hint">点击翻转查看释义</div>
+                </div>
+                <div class="card-back">
+                  <div class="card-champion-name" id="card-champ-name-back"></div>
+                  <div class="card-meaning" id="card-meaning"></div>
+                  <div class="card-extra" id="card-extra"></div>
+                  <div class="card-phrases-label">实用短语</div>
+                  <div class="card-phrases" id="card-phrases"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-controls">
+            <button class="ctrl-btn forgot" id="btn-forgot">不认识</button>
+            <button class="ctrl-btn vague" id="btn-vague">模糊</button>
+            <button class="ctrl-btn know" id="btn-know">认识</button>
+          </div>
+          <div class="card-progress">
+            <span class="progress-text" id="card-progress-text">第 1 / 500 个</span>
+            <button class="btn-random" id="btn-random">随机</button>
+            <button class="btn-order" id="btn-order">顺序</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 测验模式 -->
+      <section class="tab-content" id="quiz-tab">
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <div class="quiz-title">选择题测验</div>
+            <div class="quiz-info">
+              <span>题目数量：</span>
+              <select id="quiz-count">
+                <option value="10">10题</option>
+                <option value="20" selected>20题</option>
+                <option value="30">30题</option>
+                <option value="50">50题</option>
+              </select>
+              <button class="btn-start" id="btn-start-quiz">开始测验</button>
+            </div>
+          </div>
+          <div class="quiz-body" id="quiz-body" style="display:none;">
+            <div class="quiz-progress-bar">
+              <div class="quiz-bar-fill" id="quiz-bar-fill"></div>
+            </div>
+            <div class="quiz-number" id="quiz-number">第 1 题</div>
+            <div class="quiz-question" id="quiz-question"></div>
+            <div class="quiz-phonetic" id="quiz-phonetic"></div>
+            <div class="quiz-options" id="quiz-options"></div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+            <div class="quiz-phrases" id="quiz-phrases"></div>
+            <button class="btn-next" id="btn-next-quiz" style="display:none;">下一题</button>
+          </div>
+          <div class="quiz-result" id="quiz-result" style="display:none;">
+            <div class="result-title">测验结果</div>
+            <div class="result-score" id="result-score"></div>
+            <div class="result-detail" id="result-detail"></div>
+            <button class="btn-retry" id="btn-retry">重新测验</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 智能复习 -->
+      <section class="tab-content" id="review-tab">
+        <div class="review-container" id="review-container">
+          <div class="review-empty" id="review-empty">
+            <div class="review-empty-icon">📚</div>
+            <div class="review-empty-title">没有待复习的单词</div>
+            <div class="review-empty-hint">在闪卡模式或测验中标记为"认识"的单词将自动加入艾宾浩斯复习计划</div>
+          </div>
+          <div class="review-active" id="review-active" style="display:none;">
+            <div class="review-header">
+              <div class="review-stats-bar">
+                <span class="review-stat">
+                  <span class="review-stat-num" id="review-due-count">0</span>
+                  <span class="review-stat-label">今日待复习</span>
+                </span>
+                <span class="review-stat">
+                  <span class="review-stat-num" id="review-done-count">0</span>
+                  <span class="review-stat-label">已完成</span>
+                </span>
+                <span class="review-stat">
+                  <span class="review-stat-num" id="review-total-count">0</span>
+                  <span class="review-stat-label">总计划</span>
+                </span>
+              </div>
+              <div class="review-progress-bar"><div class="review-progress-fill" id="review-progress-fill"></div></div>
+            </div>
+            <div class="review-card-wrap">
+              <div class="review-card-top">
+                <span class="level-tag" id="review-level-tag">CET-4</span>
+                <span class="review-interval" id="review-interval">间隔: 1天</span>
+              </div>
+              <div class="flashcard" id="review-card">
+                <div class="card-inner" id="review-card-inner">
+                  <div class="card-front">
+                    <div class="card-champion-name" id="review-champ-name"></div>
+                    <div class="card-phonetic" id="review-phonetic"></div>
+                    <div class="card-word" id="review-word"></div>
+                    <div class="card-hint">点击翻转回忆释义</div>
+                  </div>
+                  <div class="card-back">
+                    <div class="card-champion-name" id="review-champ-name-back"></div>
+                    <div class="card-meaning" id="review-meaning"></div>
+                    <div class="card-extra" id="review-extra"></div>
+                    <div class="card-phrases-label">实用短语</div>
+                    <div class="card-phrases" id="review-phrases"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="review-controls" id="review-controls">
+              <button class="review-btn sm-forgot" id="review-forgot">忘记<br><small>重置 · 1天</small></button>
+              <button class="review-btn sm-hard" id="review-hard">困难<br><small>缩短间隔</small></button>
+              <button class="review-btn sm-good" id="review-good">一般<br><small>正常进阶</small></button>
+              <button class="review-btn sm-easy" id="review-easy">简单<br><small>加速前进</small></button>
+            </div>
+            <div class="review-complete" id="review-complete" style="display:none;">
+              <div class="review-complete-icon">🎉</div>
+              <div class="review-complete-title">今日复习完成！</div>
+              <div class="review-complete-text">已复习 <strong id="review-complete-count">0</strong> 个单词，下次复习会根据遗忘曲线自动安排</div>
+              <button class="btn-retry" id="review-complete-back">返回闪卡</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 单词列表 -->
+      <section class="tab-content" id="wordlist-tab">
+        <div class="wordlist-container">
+          <div class="wordlist-toolbar">
+            <input type="text" class="search-input" id="search-input" placeholder="搜索单词...">
+            <select id="filter-status">
+              <option value="all">全部状态</option>
+              <option value="mastered">已掌握</option>
+              <option value="familiar">模糊</option>
+              <option value="unknown">未学</option>
+            </select>
+          </div>
+          <div class="wordlist-count" id="wordlist-count">共 1100 个单词</div>
+          <div class="wordlist-table-wrap">
+            <table class="wordlist-table">
+              <thead>
+                <tr>
+                  <th class="col-no">#</th>
+                  <th class="col-word">单词</th>
+                  <th class="col-phonetic">音标</th>
+                  <th class="col-meaning">释义</th>
+                  <th class="col-phrases">实用短语</th>
+                  <th class="col-level">级别</th>
+                  <th class="col-status">状态</th>
+                </tr>
+              </thead>
+              <tbody id="wordlist-body"></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="words_cet4.js"></script>
+  <script src="words_kaoyan.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
