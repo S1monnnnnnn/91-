@@ -348,9 +348,10 @@ body {
   .flashcard, #review-card {
     width: 100%;
     max-width: 360px;
-    height: auto;
-    min-height: 300px;
-    aspect-ratio: 11 / 10;
+    height: 320px;
+  }
+  .card-inner, #review-card .card-inner {
+    width: 100%; height: 100%;
   }
   .card-top-bar, .review-card-top { max-width: 360px; }
   .card-word { font-size: 28px; }
@@ -360,8 +361,8 @@ body {
   .card-phrase-item { font-size: 12px; padding: 6px 10px; }
   .card-champion-name { font-size: 10px; padding: 3px 10px; margin-bottom: 8px; }
   .card-phrases-label { font-size: 10px; margin-top: 10px; margin-bottom: 5px; }
-  .card-front { padding: 14px; }
-  .card-back { padding: 14px; padding-top: 18px; }
+  .card-front, .card-back { padding: 14px; }
+  .card-back { padding-top: 18px; }
 
   .card-controls { flex-wrap: wrap; justify-content: center; gap: 8px; }
   .ctrl-btn { padding: 10px 20px; font-size: 14px; flex: 1; min-width: 80px; }
@@ -381,7 +382,7 @@ body {
 
   .flashcard, #review-card {
     max-width: 100%;
-    min-height: 270px;
+    height: 270px;
   }
   .card-top-bar, .review-card-top { max-width: 100%; }
   .card-word { font-size: 24px; letter-spacing: 1px; }
@@ -392,8 +393,8 @@ body {
   .card-champion-name { font-size: 9px; padding: 2px 8px; margin-bottom: 6px; }
   .card-phrases-label { font-size: 9px; margin-top: 8px; margin-bottom: 4px; }
   .card-phrase-item { font-size: 11px; padding: 5px 8px; gap: 4px; }
-  .card-front { padding: 10px; }
-  .card-back { padding: 10px; padding-top: 14px; }
+  .card-front, .card-back { padding: 10px; }
+  .card-back { padding-top: 14px; }
 
   .ctrl-btn { padding: 8px 14px; font-size: 13px; min-width: 70px; }
   .review-btn { padding: 6px 10px; font-size: 11px; flex: 1 1 44%; max-width: 49%; }
