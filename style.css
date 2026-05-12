@@ -379,6 +379,22 @@ body {
   .card-phrases-label { font-size: 10px; margin-top: 10px; margin-bottom: 5px; }
   .card-front, .card-back { padding: 14px; }
   .card-back { padding-top: 18px; }
+  .card-front {
+    overflow: visible !important;
+    background-color: #1e1b4b !important;
+    background-image: none !important;
+  }
+  .card-back {
+    overflow: visible !important;
+    background-color: #0f0d2e !important;
+    background-image: none !important;
+  }
+  .card-front::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.35) 100%);
+  }
+  .card-back::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.35) 100%);
+  }
 
   .card-controls { flex-wrap: wrap; justify-content: center; gap: 8px; }
   .ctrl-btn { padding: 10px 20px; font-size: 14px; flex: 1; min-width: 80px; }
@@ -413,6 +429,23 @@ body {
   .card-phrase-item { font-size: 11px; padding: 5px 8px; gap: 4px; }
   .card-front, .card-back { padding: 10px; }
   .card-back { padding-top: 14px; }
+  .card-front {
+    overflow: visible !important;
+    background-color: #1e1b4b !important;
+    background-image: none !important;
+    outline: 3px solid red;
+  }
+  .card-back {
+    overflow: visible !important;
+    background-color: #0f0d2e !important;
+    background-image: none !important;
+  }
+  .card-front::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.28) 100%);
+  }
+  .card-back::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 100%);
+  }
 
   .ctrl-btn { padding: 8px 14px; font-size: 13px; min-width: 70px; }
   .review-btn { padding: 6px 10px; font-size: 11px; flex: 1 1 44%; max-width: 49%; }
