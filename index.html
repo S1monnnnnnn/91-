@@ -25,6 +25,7 @@
         <button class="nav-btn" data-tab="quiz">测验模式</button>
         <button class="nav-btn" data-tab="review">智能复习<span class="review-badge" id="review-badge">0</span></button>
         <button class="nav-btn" data-tab="wordlist">单词列表</button>
+        <button class="nav-btn" data-tab="favorites">⭐收藏<span class="review-badge" id="fav-badge">0</span></button>
       </nav>
       <div class="stats">
         <span class="stat-item">
@@ -45,6 +46,10 @@
           <div class="card-top-bar">
             <span class="level-tag" id="card-level-tag">CET-4</span>
             <span class="card-index" id="card-index-text">1 / 500</span>
+            <button class="btn-fav" id="btn-fav" title="收藏/取消收藏">☆</button>
+          </div>
+          <div class="card-search-bar">
+            <input type="text" class="search-input quick-search" id="quick-search" placeholder="🔍 搜单词直接跳转...">
           </div>
           <div class="card-stack">
             <div class="flashcard" id="flashcard">
@@ -145,6 +150,7 @@
               <div class="review-card-top">
                 <span class="level-tag" id="review-level-tag">CET-4</span>
                 <span class="review-interval" id="review-interval">间隔: 1天</span>
+                <button class="btn-fav" id="btn-review-fav" title="收藏/取消收藏">☆</button>
               </div>
               <div class="flashcard" id="review-card">
                 <div class="card-inner" id="review-card-inner">
@@ -210,6 +216,33 @@
             </table>
           </div>
           <div class="pagination" id="pagination"></div>
+        </div>
+      </section>
+
+      <!-- 收藏夹 -->
+      <section class="tab-content" id="favorites-tab">
+        <div class="wordlist-container">
+          <div class="wordlist-toolbar">
+            <input type="text" class="search-input" id="fav-search-input" placeholder="搜索收藏的单词...">
+          </div>
+          <div class="wordlist-count" id="fav-count">共 0 个收藏</div>
+          <div class="wordlist-table-wrap">
+            <table class="wordlist-table">
+              <thead>
+                <tr>
+                  <th class="col-no">#</th>
+                  <th class="col-word">单词</th>
+                  <th class="col-phonetic">音标</th>
+                  <th class="col-meaning">释义</th>
+                  <th class="col-phrases">实用短语</th>
+                  <th class="col-level">级别</th>
+                  <th class="col-status">收藏</th>
+                </tr>
+              </thead>
+              <tbody id="fav-body"></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="fav-pagination"></div>
         </div>
       </section>
     </main>

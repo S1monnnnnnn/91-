@@ -62,6 +62,24 @@ function getChampionForWord(wordEn) {
 const STORAGE_KEY = 'vocab91_progress';
 const REVIEW_KEY = 'vocab91_review';
 const LEVEL_KEY = 'vocab91_level';
+const FAVORITES_KEY = 'vocab91_favorites';
+
+function loadFavorites() { try { return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []; } catch { return []; } }
+function saveFavorites(favs) { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs)); }
+function isFavorited(wordEn) { return loadFavorites().includes(wordEn); }
+function addFavorite(wordEn) {
+  const favs = loadFavorites();
+  if (!favs.includes(wordEn)) { favs.push(wordEn); saveFavorites(favs); }
+}
+function removeFavorite(wordEn) {
+  const favs = loadFavorites();
+  const idx = favs.indexOf(wordEn);
+  if (idx >= 0) { favs.splice(idx, 1); saveFavorites(favs); }
+}
+function toggleFavorite(wordEn) {
+  if (isFavorited(wordEn)) removeFavorite(wordEn);
+  else addFavorite(wordEn);
+}
 
 function loadProgress() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
@@ -170,6 +188,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     const tab = document.getElementById(btn.dataset.tab + '-tab');
     if (tab) tab.classList.add('active');
     if (btn.dataset.tab === 'wordlist') renderWordList();
+    if (btn.dataset.tab === 'favorites') renderFavorites();
     if (btn.dataset.tab === 'flashcard') updateStats();
     if (btn.dataset.tab === 'review') startReview();
   });
@@ -263,6 +282,12 @@ function renderFlashcard() {
 
   card.dataset.wordIndex = idx;
   card.dataset.wordEn = word.en;
+
+  // 收藏状态
+  const btnFav = document.getElementById('btn-fav');
+  btnFav.textContent = isFavorited(word.en) ? '★' : '☆';
+  btnFav.style.color = isFavorited(word.en) ? '#f59e0b' : '';
+  btnFav.dataset.wordEn = word.en;
 }
 
 function flipCard() {
@@ -331,6 +356,69 @@ document.getElementById('btn-order').addEventListener('click', () => {
   isRandom = false; flashcardHistory = [];
   saveCurrentState(); renderFlashcard();
 });
+
+// 收藏按钮
+document.getElementById('btn-fav').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const en = document.getElementById('flashcard').dataset.wordEn;
+  if (!en) return;
+  toggleFavorite(en);
+  renderFlashcard();
+  updateFavBadge();
+});
+document.getElementById('btn-review-fav').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const en = document.getElementById('btn-review-fav').dataset.wordEn;
+  if (!en) return;
+  toggleFavorite(en);
+  const card = document.getElementById('review-card');
+  const btn = document.getElementById('btn-review-fav');
+  btn.textContent = isFavorited(en) ? '★' : '☆';
+  btn.style.color = isFavorited(en) ? '#f59e0b' : '';
+  updateFavBadge();
+});
+
+// 快速搜索跳转
+document.getElementById('quick-search').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q || q.length < 2) return;
+  const pool = getActivePool();
+  const found = pool.find(w => w.en.toLowerCase() === q);
+  if (found) {
+    const poolIdx = pool.indexOf(found);
+    currentIndex = poolIdx;
+    flashcardHistory = [];
+    isRandom = false;
+    saveCurrentState();
+    renderFlashcard();
+    this.value = '';
+  }
+});
+document.getElementById('quick-search').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const q = this.value.trim().toLowerCase();
+    if (!q || q.length < 1) return;
+    const pool = getActivePool();
+    const found = pool.find(w => w.en.toLowerCase().startsWith(q) || w.en.toLowerCase().includes(q));
+    if (found) {
+      const poolIdx = pool.indexOf(found);
+      currentIndex = poolIdx;
+      flashcardHistory = [];
+      isRandom = false;
+      saveCurrentState();
+      renderFlashcard();
+      this.value = '';
+    }
+  }
+});
+
+function updateFavBadge() {
+  const count = loadFavorites().length;
+  const badge = document.getElementById('fav-badge');
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'inline' : 'none';
+}
 
 document.addEventListener('keydown', (e) => {
   const activeTab = document.querySelector('.tab-content.active');
@@ -531,7 +619,91 @@ function renderWordList() {
 document.getElementById('search-input').addEventListener('input', () => { wordListPage = 1; renderWordList(); });
 document.getElementById('filter-status').addEventListener('change', () => { wordListPage = 1; renderWordList(); });
 
-// ========== 智能复习模式 (SM-2) ==========
+// ========== 收藏夹 ==========
+let favWordListPage = 1;
+const FAV_WORDS_PER_PAGE = 20;
+
+function renderFavorites() {
+  const favEns = loadFavorites();
+  const search = document.getElementById('fav-search-input').value.toLowerCase();
+  let favWords = ALL_WORDS.filter(w => favEns.includes(w.en));
+  if (search) {
+    favWords = favWords.filter(w =>
+      w.en.toLowerCase().includes(search) || w.zh.includes(search)
+    );
+  }
+
+  document.getElementById('fav-count').textContent = '共 ' + favWords.length + ' 个收藏';
+
+  const totalPages = Math.ceil(favWords.length / FAV_WORDS_PER_PAGE) || 1;
+  if (favWordListPage > totalPages) favWordListPage = totalPages;
+  const start = (favWordListPage - 1) * FAV_WORDS_PER_PAGE;
+  const pageWords = favWords.slice(start, start + FAV_WORDS_PER_PAGE);
+
+  const tbody = document.getElementById('fav-body');
+  tbody.innerHTML = '';
+  pageWords.forEach((w, i) => {
+    const tr = document.createElement('tr');
+    let phrasesHTML = '';
+    if (w.phrases && w.phrases.length > 0) {
+      phrasesHTML = w.phrases.map(p =>
+        '<div class="wl-phrase-item"><span class="wl-phrase-en">' + p.en + '</span><br><span class="wl-phrase-zh">' + p.zh + '</span></div>'
+      ).join('');
+    }
+    const levelLabel = w.level === 'kaoyan' ? '考研' : 'CET-4';
+    tr.innerHTML = `
+      <td class="col-no">${start + i + 1}</td>
+      <td class="col-word">${w.en}</td>
+      <td class="col-phonetic">${w.phonetic || ''}</td>
+      <td>${w.zh}</td>
+      <td class="col-phrases">${phrasesHTML}</td>
+      <td class="col-level"><span class="level-tag ${w.level}">${levelLabel}</span></td>
+      <td class="col-status"><button class="btn-fav-remove" data-word="${w.en}">★ 取消</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // remove buttons
+  tbody.querySelectorAll('.btn-fav-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      removeFavorite(btn.dataset.word);
+      updateFavBadge();
+      renderFavorites();
+      const cardEn = document.getElementById('flashcard').dataset.wordEn;
+      if (cardEn && cardEn === btn.dataset.word) {
+        document.getElementById('btn-fav').textContent = '☆';
+        document.getElementById('btn-fav').style.color = '';
+      }
+    });
+  });
+
+  const pagination = document.getElementById('fav-pagination');
+  pagination.innerHTML = `
+    <button class="page-jump-btn" id="fav-prev" ${favWordListPage <= 1 ? 'disabled' : ''}>上一页</button>
+    <span class="page-jump-info">
+      <input type="number" class="page-jump-input" id="fav-page-input" value="${favWordListPage}" min="1" max="${totalPages}">
+      <span class="page-jump-total">/ ${totalPages} 页</span>
+    </span>
+    <button class="page-jump-btn" id="fav-next" ${favWordListPage >= totalPages ? 'disabled' : ''}>下一页</button>
+  `;
+  document.getElementById('fav-prev').addEventListener('click', () => {
+    if (favWordListPage > 1) { favWordListPage--; renderFavorites(); }
+  });
+  document.getElementById('fav-next').addEventListener('click', () => {
+    if (favWordListPage < totalPages) { favWordListPage++; renderFavorites(); }
+  });
+  document.getElementById('fav-page-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const v = parseInt(e.target.value);
+      if (v >= 1 && v <= totalPages) { favWordListPage = v; renderFavorites(); }
+      else { e.target.value = favWordListPage; }
+    }
+  });
+}
+
+document.getElementById('fav-search-input').addEventListener('input', () => { favWordListPage = 1; renderFavorites(); });
+
+// ========== 智態复习模式 (SM-2) ==========
 let reviewQueue = [];
 let reviewDone = 0;
 let reviewTotal = 0;
@@ -592,6 +764,12 @@ function renderReviewCard() {
 
   const rs = getReviewState(word.en);
   document.getElementById('review-interval').textContent = '间隔: ' + fmtInterval(rs.interval);
+
+  // 收藏状态
+  const btnRFav = document.getElementById('btn-review-fav');
+  btnRFav.textContent = isFavorited(word.en) ? '★' : '☆';
+  btnRFav.style.color = isFavorited(word.en) ? '#f59e0b' : '';
+  btnRFav.dataset.wordEn = word.en;
 }
 
 function flipReviewCard() {
@@ -652,5 +830,6 @@ function init() {
   renderFlashcard();
   updateStats();
   updateReviewBadge();
+  updateFavBadge();
 }
 init();
