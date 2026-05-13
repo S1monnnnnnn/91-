@@ -499,6 +499,43 @@ document.getElementById('daily-goal-wrap').addEventListener('click', () => {
   }
 });
 
+// ========== 沉浸模式 ==========
+const IMMERSIVE_KEY = 'vocab91_immersive';
+
+function isImmersive() { return localStorage.getItem(IMMERSIVE_KEY) === '1'; }
+function setImmersive(on) { localStorage.setItem(IMMERSIVE_KEY, on ? '1' : '0'); }
+
+function applyImmersive() {
+  const on = isImmersive();
+  const app = document.querySelector('.app');
+  const bar = document.getElementById('immersive-bar');
+  const btn = document.getElementById('btn-immersive');
+  if (on) {
+    app.classList.add('immersive');
+    bar.style.display = 'flex';
+    btn.textContent = '退出';
+    btn.style.background = '#dbeafe';
+    btn.style.borderColor = '#93c5fd';
+    btn.style.color = '#1d4ed8';
+  } else {
+    app.classList.remove('immersive');
+    bar.style.display = 'none';
+    btn.textContent = '🎯 沉浸';
+    btn.style.background = 'white';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  }
+}
+
+document.getElementById('btn-immersive').addEventListener('click', () => {
+  setImmersive(!isImmersive());
+  applyImmersive();
+});
+document.getElementById('btn-exit-immersive').addEventListener('click', () => {
+  setImmersive(false);
+  applyImmersive();
+});
+
 document.addEventListener('keydown', (e) => {
   const activeTab = document.querySelector('.tab-content.active');
   if (!activeTab || activeTab.id !== 'flashcard-tab') return;
@@ -912,5 +949,6 @@ function init() {
   updateReviewBadge();
   updateFavBadge();
   updateGoalRing();
+  applyImmersive();
 }
 init();

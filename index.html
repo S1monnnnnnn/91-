@@ -19,6 +19,7 @@
           <option value="cet4">四级词汇</option>
           <option value="kaoyan">考研词汇</option>
         </select>
+        <button class="btn-immersive" id="btn-immersive" title="沉浸模式：隐藏导航栏和统计">🎯 沉浸</button>
       </div>
       <nav class="nav">
         <button class="nav-btn active" data-tab="flashcard">闪卡模式</button>
@@ -45,6 +46,11 @@
         </span>
       </div>
     </header>
+
+    <div class="immersive-bar" id="immersive-bar" style="display:none;">
+      <span class="immersive-logo">91 背单词</span>
+      <button class="btn-exit-immersive" id="btn-exit-immersive">← 退出沉浸</button>
+    </div>
 
     <main class="main">
       <!-- 闪卡模式 -->

@@ -41,6 +41,36 @@ body {
 .level-select:hover { border-color: var(--primary); }
 .level-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
 
+.btn-immersive {
+  border: 1px solid var(--border); background: white; color: var(--text);
+  padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.btn-immersive:hover { background: var(--bg); border-color: var(--primary); }
+
+.immersive-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px; margin-bottom: 4px;
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.immersive-logo { font-size: 16px; font-weight: 700; color: var(--text); }
+.btn-exit-immersive {
+  border: none; background: #fee2e2; color: #dc2626;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  padding: 6px 16px; border-radius: 8px;
+}
+.btn-exit-immersive:hover { background: #fecaca; }
+
+/* 沉浸模式 */
+.app.immersive .nav { display: none; }
+.app.immersive .header .logo { display: none; }
+.app.immersive .header-controls .level-select { display: none; }
+.app.immersive .stats .stat-item:not(.daily-goal-wrap) { display: none; }
+.app.immersive .header { padding: 6px 16px; }
+.app.immersive .header-controls { gap: 0; }
+.app.immersive .btn-immersive { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; font-size: 12px; padding: 4px 10px; }
+
 .logo { display: flex; align-items: center; gap: 8px; }
 .logo-icon {
   background: linear-gradient(135deg, #667eea, #764ba2);
@@ -442,6 +472,10 @@ body {
   .card-top-bar, .review-card-top { max-width: 360px; }
   .card-search-bar { max-width: 360px; }
   .btn-fav { font-size: 20px; }
+  .btn-immersive { font-size: 13px; padding: 5px 10px; }
+  .immersive-bar { padding: 6px 12px; }
+  .immersive-logo { font-size: 14px; }
+  .btn-exit-immersive { font-size: 13px; padding: 5px 12px; }
   .btn-speak { width: 30px; height: 30px; font-size: 15px; }
   .goal-ring { width: 36px; height: 36px; }
   .goal-text { font-size: 10px; }
@@ -523,6 +557,10 @@ body {
   .card-top-bar, .review-card-top { max-width: 100%; }
   .card-search-bar { max-width: 100%; }
   .btn-fav { font-size: 18px; }
+  .btn-immersive { font-size: 12px; padding: 4px 8px; }
+  .immersive-bar { padding: 4px 10px; }
+  .immersive-logo { font-size: 13px; }
+  .btn-exit-immersive { font-size: 12px; padding: 4px 10px; }
   .btn-speak { width: 28px; height: 28px; font-size: 14px; }
   .goal-ring { width: 32px; height: 32px; }
   .goal-text { font-size: 9px; }
