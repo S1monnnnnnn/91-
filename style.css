@@ -150,12 +150,12 @@ body {
   background: #1e1b4b var(--champ-img) center/cover no-repeat;
   border: 2px solid #e0e7ff;
   border-top: 4px solid var(--champ-c1, #667eea);
-  overflow: hidden;
+  overflow: visible;
 }
 .card-front::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.55) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.25) 100%);
   border-radius: 13px;
 }
 .card-front > * { position: relative; z-index: 1; }
@@ -171,7 +171,7 @@ body {
 .card-back::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.2) 100%);
   border-radius: 13px;
 }
 .card-back > * { position: relative; z-index: 1; }
@@ -414,13 +414,22 @@ body {
   .card-front, .card-back {
     transition: opacity 0.3s ease;
   }
-  .card-front { opacity: 1; z-index: 2; }
+  .card-front {
+    opacity: 1; z-index: 2;
+    overflow: visible !important;
+    background: linear-gradient(135deg, var(--champ-c1, #667eea), var(--champ-c2, #764ba2), #1e1b4b) !important;
+  }
   .card-back {
     transform: none;
     -webkit-transform: none;
     opacity: 0;
     z-index: 1;
     pointer-events: none;
+    overflow: visible !important;
+    background: linear-gradient(135deg, var(--champ-c2, #a78bfa), var(--champ-c1, #667eea), #0f0d2e) !important;
+  }
+  .card-front::after, .card-back::after {
+    display: none !important;
   }
   .flashcard.flipped .card-front, #review-card.flipped .card-front {
     opacity: 0;
@@ -486,13 +495,22 @@ body {
   .card-front, .card-back {
     transition: opacity 0.3s ease;
   }
-  .card-front { opacity: 1; z-index: 2; }
+  .card-front {
+    opacity: 1; z-index: 2;
+    overflow: visible !important;
+    background: linear-gradient(135deg, var(--champ-c1, #667eea), var(--champ-c2, #764ba2), #1e1b4b) !important;
+  }
   .card-back {
     transform: none;
     -webkit-transform: none;
     opacity: 0;
     z-index: 1;
     pointer-events: none;
+    overflow: visible !important;
+    background: linear-gradient(135deg, var(--champ-c2, #a78bfa), var(--champ-c1, #667eea), #0f0d2e) !important;
+  }
+  .card-front::after, .card-back::after {
+    display: none !important;
   }
   .flashcard.flipped .card-front, #review-card.flipped .card-front {
     opacity: 0;
