@@ -58,6 +58,16 @@ function getChampionForWord(wordEn) {
   return LOL_CHAMPIONS[Math.abs(hash) % LOL_CHAMPIONS.length];
 }
 
+// ========== 发音 ==========
+function speakWord(wordEn) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(wordEn);
+  u.lang = 'en-US';
+  u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+
 // ========== 数据管理 ==========
 const STORAGE_KEY = 'vocab91_progress';
 const REVIEW_KEY = 'vocab91_review';
@@ -309,6 +319,7 @@ function markWord(status) {
   const pool = getActivePool();
   const word = pool.find(w => w.en === en);
   if (!word) return;
+  const wasMastered = getWordStatus(word) === 'mastered';
   setWordStatus(word, status);
   if (status === 'mastered') {
     const rs = getReviewState(word.en);
@@ -316,6 +327,7 @@ function markWord(status) {
       updateReviewState(word.en, 2);
     }
     updateReviewBadge();
+    if (!wasMastered) incrementDailyProgress();
   }
   updateStats();
   if (status === 'mastered') { setTimeout(() => nextFlashcard(), 300); }
@@ -378,6 +390,18 @@ document.getElementById('btn-review-fav').addEventListener('click', (e) => {
   updateFavBadge();
 });
 
+// 发音按钮
+document.getElementById('btn-speak').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const en = document.getElementById('flashcard').dataset.wordEn;
+  if (en) speakWord(en);
+});
+document.getElementById('btn-review-speak').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const en = document.getElementById('btn-review-fav').dataset.wordEn;
+  if (en) speakWord(en);
+});
+
 // 快速搜索跳转
 document.getElementById('quick-search').addEventListener('input', function() {
   const q = this.value.trim().toLowerCase();
@@ -419,6 +443,61 @@ function updateFavBadge() {
   badge.textContent = count;
   badge.style.display = count > 0 ? 'inline' : 'none';
 }
+
+// ========== 每日目标 ==========
+const DAILY_GOAL_KEY = 'vocab91_daily_goal';
+const DAILY_PROGRESS_KEY = 'vocab91_daily_progress';
+const DEFAULT_GOAL = 20;
+
+function getDailyGoal() {
+  const v = parseInt(localStorage.getItem(DAILY_GOAL_KEY));
+  return v > 0 ? v : DEFAULT_GOAL;
+}
+function setDailyGoal(n) { localStorage.setItem(DAILY_GOAL_KEY, n); }
+
+function getDailyProgress() {
+  const today = new Date().toISOString().slice(0, 10);
+  try {
+    const p = JSON.parse(localStorage.getItem(DAILY_PROGRESS_KEY));
+    return (p && p.date === today) ? p.count : 0;
+  } catch { return 0; }
+}
+function incrementDailyProgress() {
+  const today = new Date().toISOString().slice(0, 10);
+  const count = getDailyProgress() + 1;
+  localStorage.setItem(DAILY_PROGRESS_KEY, JSON.stringify({ date: today, count }));
+  updateGoalRing();
+}
+function updateGoalRing() {
+  const goal = getDailyGoal();
+  const done = getDailyProgress();
+  const pct = Math.min(100, Math.round((done / goal) * 100));
+  document.getElementById('goal-text').textContent = done + '/' + goal;
+  const circumference = 2 * Math.PI * 19; // ~119.38
+  const offset = circumference - (pct / 100) * circumference;
+  const ring = document.getElementById('goal-ring-fill');
+  ring.setAttribute('stroke-dasharray', circumference + ' ' + circumference);
+  ring.setAttribute('stroke-dashoffset', offset);
+  if (done >= goal && goal > 0 && pct >= 100) {
+    ring.setAttribute('stroke', '#16a34a');
+    document.getElementById('goal-text').style.color = '#16a34a';
+  } else {
+    ring.setAttribute('stroke', '#4f46e5');
+    document.getElementById('goal-text').style.color = '';
+  }
+}
+// Click to change goal
+document.getElementById('daily-goal-wrap').addEventListener('click', () => {
+  const current = getDailyGoal();
+  const input = prompt('设置每日目标（今天已学 ' + getDailyProgress() + ' 词）：', current);
+  if (input !== null) {
+    const n = parseInt(input);
+    if (n > 0 && n <= 500) {
+      setDailyGoal(n);
+      updateGoalRing();
+    }
+  }
+});
 
 document.addEventListener('keydown', (e) => {
   const activeTab = document.querySelector('.tab-content.active');
@@ -786,6 +865,7 @@ function answerReview(quality) {
   updateReviewStats();
   updateReviewBadge();
   updateStats();
+  if (quality >= 2) incrementDailyProgress();
   renderReviewCard();
 }
 
@@ -831,5 +911,6 @@ function init() {
   updateStats();
   updateReviewBadge();
   updateFavBadge();
+  updateGoalRing();
 }
 init();

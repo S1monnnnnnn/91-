@@ -36,6 +36,13 @@
           <span class="stat-label">进度</span>
           <span class="stat-value" id="progress-percent">0%</span>
         </span>
+        <span class="stat-item daily-goal-wrap" id="daily-goal-wrap" title="今日目标，点击修改">
+          <svg class="goal-ring" width="44" height="44" viewBox="0 0 44 44">
+            <circle class="goal-ring-bg" cx="22" cy="22" r="19" fill="none" stroke="#e2e8f0" stroke-width="4"/>
+            <circle class="goal-ring-fill" id="goal-ring-fill" cx="22" cy="22" r="19" fill="none" stroke="#4f46e5" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 119.38" transform="rotate(-90 22 22)"/>
+          </svg>
+          <span class="goal-text" id="goal-text">0/20</span>
+        </span>
       </div>
     </header>
 
@@ -57,7 +64,10 @@
                 <div class="card-front">
                   <div class="card-champion-name" id="card-champ-name"></div>
                   <div class="card-phonetic" id="card-phonetic"></div>
-                  <div class="card-word" id="card-word"></div>
+                  <div class="card-word-row">
+                    <span class="card-word" id="card-word"></span>
+                    <button class="btn-speak" id="btn-speak" title="朗读单词">🔊</button>
+                  </div>
                   <div class="card-hint">点击翻转查看释义</div>
                 </div>
                 <div class="card-back">
@@ -157,7 +167,10 @@
                   <div class="card-front">
                     <div class="card-champion-name" id="review-champ-name"></div>
                     <div class="card-phonetic" id="review-phonetic"></div>
-                    <div class="card-word" id="review-word"></div>
+                    <div class="card-word-row">
+                      <span class="card-word" id="review-word"></span>
+                      <button class="btn-speak" id="btn-review-speak" title="朗读单词">🔊</button>
+                    </div>
                     <div class="card-hint">点击翻转回忆释义</div>
                   </div>
                   <div class="card-back">
